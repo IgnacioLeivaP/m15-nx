@@ -1,0 +1,22 @@
+# Magic 2015 XBLA 5841141F, Title Update 0.0.6.2.
+cr_as_local = true
+non_volatile_as_local = true
+xer_as_local = true
+ctr_as_local = true
+reserved_as_local = true
+skip_msr = true
+dform_disp_split = true
+fctiwz_inline = true
+fp_moves_modeless = true
+fp_compares_modeless = true
+fp_mode_lookahead = true
+fp_mode_lookahead_past_branch = false
+fcti_inline = true
+fp_copy_pairs = true
+div_inline = true
+rotate_word_shifts = true
+fp_copy_forwarding = true
+setjmp_save_locals = true
+non_volatile_as_local_keep = ["v64-v72"]
+
+[functions]

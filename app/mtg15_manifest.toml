@@ -1,0 +1,11 @@
+# Magic 2015 XBLA 5841141F, Title Update 0.0.6.2.
+[project]
+name = "mtg15"
+sdk_version = "0.10.0"
+game_root = "../assets/game_root"
+
+[entrypoint]
+file_path = "../assets/game_root/default.xex"
+out_directory_path = "generated/default"
+
+includes = ["overrides.toml", "perf_overrides.toml"]

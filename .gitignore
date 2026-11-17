@@ -1,0 +1,107 @@
+# ---- lo que nunca entra en el repositorio: datos del juego y todo lo que salga de ellos ----
+# ejecutables y paquetes de la consola original
+*.xex
+*.xexp
+*.xbe
+*.xap
+*.stfs
+# datos del juego
+*.wad
+*.lob
+*.tdx
+*.TDX
+*.xma
+*.wmv
+*.bik
+*.ogg
+*.dds
+*.pck
+*.pak
+# scripts del juego (originales o parcheados): los genera el instalador
+*.luac
+*.lua
+# lo que produce el instalador y el compilador
+*.nxpack
+*.nxidx
+*.nro
+*.nsp
+*.xci
+*.nso
+*.nca
+*.kip
+*.elf
+*.pdb
+*.dll
+*.lib
+*.obj
+*.o
+*.a
+*.exe
+# datos que se sacan del juego para construir
+assets/
+generated/
+out/
+work/
+renut_shader_dump/
+renut_switch/
+renut_switch_release/
+deko3d_shaders/
+deko3d_tools/
+shader_capture/
+deko3d_glsl.bin
+shader_cache_switch.cpp
+deko3d_glsl_switch.cpp
+spirv_cache.zst
+default_image.bin
+game_root.nxpack
+game_root.nxidx
+pgo/
+logs/
+shots/
+*.log
+# imagenes: el repositorio es solo fuente
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.ico
+# python
+__pycache__/
+*.pyc
+.venv/
+# editores y sistema
+.vs/
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store
+# dependencias de app/ que van aparte (--thirdparty), nunca en el repositorio
+app/thirdparty/
+# el SDK si va en el repositorio (sdk/), pero sus bibliotecas grandes se bajan con
+# install/fetch_thirdparty.py: si alguna vez se clonan ahi, que no entren
+sdk/thirdparty/FFmpeg/
+sdk/thirdparty/catch2/
+sdk/thirdparty/fmt/
+sdk/thirdparty/glslang/
+sdk/thirdparty/imgui/
+sdk/thirdparty/inja/
+sdk/thirdparty/moltenvk/
+sdk/thirdparty/sdl3/
+sdk/thirdparty/simde/
+sdk/thirdparty/spirv-headers/
+sdk/thirdparty/spirv-tools/
+sdk/thirdparty/tomlplusplus/
+sdk/thirdparty/tracy/
+sdk/thirdparty/vulkan-headers/
+sdk/thirdparty/vulkan-loader/
+sdk/thirdparty/vulkan-memory-allocator/
+sdk/thirdparty/xxHash/
+
+# Encrypted game archives and runtime captures
+*.zed
+*.ZED
+*.raw
+*.bin

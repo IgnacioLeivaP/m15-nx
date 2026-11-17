@@ -49,3 +49,16 @@ only activates when explicitly enabled or invoked; it is off by default.
 checks before creating the ZIP outside the repository. Original .ZED/.XEX/.XEXP files,
 runtime captures, generated Lua/C++, shaders, NRO, packs and game art must stay outside
 this tree. See VALIDATION.md for current results and limits.
+
+## Language and Switch-only controls
+
+Pass `--language es` to build Spanish into the NRO. Available codes are `system`, `en`,
+`es`, `fr`, `de`, `it`, `ja`, `pt`, `ko`, `ru`. A fresh build defaults to `system`.
+Before CMake configuration, the installer updates both staged configuration templates;
+CMake embeds them in the NRO. Assembly writes the same language to mtg15.toml.
+The stage records the selection in out/build_options.json, so a later assemble-only run
+does not reset it. A different language requires rerunning the nro step. Existing legacy
+menu preferences do not override the system/build language choice.
+
+The texture override always uses Nintendo Switch glyphs. Xbox/PlayStation selection is
+not part of this Switch-specific port.

@@ -1,8 +1,7 @@
 # Magic 2015 for the Nintendo Switch: your options. This file is written next to the NRO at the first start when there
 # is none; edit it there. Everything else is built into the NRO.
 
-# The game's language: "" (the one chosen in the game's Settings menu, else the console's system language; English
-# when the game does not have it), en, ja, de, fr, es or it.
+# Build default selected by install.py --language; empty follows the Switch system language.
 mtg15_language = ""
 
 # Controllers: buttons by letter (the Switch A accepts, as the Xbox A does, though it is the right button; the user

@@ -21,6 +21,7 @@ Python 3.8+ (standard library), plus Pillow and numpy for the button icons and C
 for the builds; the tool check at the start says what is missing and how to install it.
 """
 import argparse
+import re
 import hashlib
 import json
 import os
@@ -435,8 +436,45 @@ class Installer:
         self.run([py, os.path.join(self.root, "tools", "renut_release_shaders.py"), "--glsl", glsl])
 
 
+    def selected_language(self, packaging=False):
+        options_file = os.path.join(self.root, "out", "build_options.json")
+        recorded = None
+        if os.path.isfile(options_file):
+            with open(options_file, encoding="utf-8") as stream:
+                recorded = json.load(stream)["language"]
+        requested = self.args.language
+        if packaging and requested is not None and requested != (recorded or "system"):
+            raise ValueError("Language differs from the built NRO; run the nro step with --language " + requested)
+        return requested if requested is not None else (recorded or "system")
+
+    def prepare_language(self):
+        language = self.selected_language()
+        value = "" if language == "system" else language
+        self.say("   build language: " + language + "; controller glyphs: Nintendo Switch")
+        if self.dry:
+            return language
+        for name in ("mtg15_switch_defaults.toml", "mtg15_switch.toml"):
+            path = os.path.join(self.root, "app", name)
+            with open(path, encoding="utf-8") as stream:
+                text = stream.read()
+            setting = 'mtg15_language = "' + value + '"'
+            if re.search(r"(?m)^mtg15_language\s*=", text):
+                text = re.sub(r"(?m)^mtg15_language\s*=.*$", setting, text)
+            else:
+                text += chr(10) + setting + chr(10)
+            with open(path, "w", encoding="utf-8") as stream:
+                stream.write(text)
+        return language
+
+    def record_build_language(self, language):
+        os.makedirs(os.path.join(self.root, "out"), exist_ok=True)
+        with open(os.path.join(self.root, "out", "build_options.json"), "w", encoding="utf-8") as stream:
+            json.dump({"language": language, "button_style": "switch"}, stream, indent=2)
+
+
     def do_nro(self):
         self.step("the NRO (devkitA64, Ninja)")
+        language = self.prepare_language()
         build = self.path("build_dir")
         defines = ["-DMTG15_NATIVE_RENDERER=OFF", "-DMTG15_RENUT_RENDERER=ON", "-DMTG15_RENUT_PORT_SHADERS=OFF",
                    "-DMTG15_RENUT_RELEASE_SHADERS=ON", "-DMTG15_SWITCH_LTO=OFF", "-DMTG15_PGO=",
@@ -451,9 +489,12 @@ class Installer:
                "-DPython3_EXECUTABLE=" + sys.executable, "-DPYTHON_EXECUTABLE=" + sys.executable] + defines
         self.run(cmd, what="configure for the console")
         self.run([self.cmake, "--build", build, "-j", str(self.args.jobs)], what="compile mtg15.nro")
+        if not self.dry:
+            self.record_build_language(language)
 
     # --- 9. assemble ---------------------------------------------------------------------------------------------
     def do_assemble(self):
+        language = self.selected_language(packaging=True)
         self.step("the SD card folder: " + self.sd)
         nro = os.path.join(self.path("build_dir"), self.game["nro"])
         if not self.dry:
@@ -471,7 +512,9 @@ class Installer:
             lines = ["# " + self.game["title"] + " for the Nintendo Switch: your options.",
                      "# Written by the installer; the game also writes this file at its first start when it is missing.",
                      ""]
-            for key, value in cfg["keys"].items():
+            keys = dict(cfg["keys"])
+            keys["mtg15_language"] = "" if language == "system" else language
+            for key, value in keys.items():
                 if isinstance(value, bool):
                     lines.append("%s = %s" % (key, "true" if value else "false"))
                 elif isinstance(value, str):
@@ -589,6 +632,8 @@ def main(argv=None):
     ap.add_argument("--rexglue", help="optional existing host code generator")
     ap.add_argument("--xenos-recomp", help="optional existing XenosRecomp.exe")
     ap.add_argument("--deko-tools", help="optional existing deko3d_tools directory")
+    ap.add_argument("--language", choices=("system", "en", "es", "fr", "de", "it", "ja", "pt", "ko", "ru"),
+                    default=None, help="language baked into the NRO: system (default), en, es, fr, de, it, ja, pt, ko, ru; reuses the staged choice for partial runs")
     ap.add_argument("--jobs", type=int, default=8, help="parallel compile jobs for the NRO (default: 8)")
     ap.add_argument("--dry-run", action="store_true", help="print the steps and their commands, run nothing")
     ap.add_argument("--only", help="run only these steps (comma separated)")

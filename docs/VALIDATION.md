@@ -14,7 +14,7 @@ Checked on 2026-11-17. This is separate from the development package last built 
 | Shader pipeline | 211/211 compiled, 0 failures; 100 VS and 111 PS; GLSL optimization checked |
 | Asset pack | 17 verified files, approximately 1053 MiB; data checksum checked by rereading |
 | Full native Switch build | Compiled and linked with GCC 15.2.0, Ninja, 6 jobs, LTO off |
-| NRO metadata and recent hooks | Magic 2015 / Nispero / 1.0.0; November 13 Lua/life hook strings present |
+| NRO metadata and recent hooks | Magic 2015 / Nispero / 1.0.0; Spanish build default and November 13 Lua/life hook strings present |
 | Installer SD-folder assembly | Passed: 10 files including one original DLC package; SHA256 manifest written |
 | Original-only bootstrap and automatic capture collection | Not implemented for encrypted ZED |
 | Fresh PC host-tool/dependency compilation | Not run during preparation; existing compatible host tools and local dependencies reused |
@@ -31,10 +31,17 @@ The same unresolved-call fatal path is already present in the development tree's
 `mtg15_recomp.158.cpp`; preparation did not introduce or repair it. Compilation is not proof
 that this path or a complete match works at runtime.
 
-Known development limits remain: hidden Garruk Expansion entry by request, no language/icon
-Options dropdowns, battlefield line artifacts, and reported exits in some longer PC sessions.
+Known development limits remain: hidden Garruk Expansion entry by request, build-time language selection and fixed Switch glyphs, battlefield line artifacts, and reported exits in some longer PC sessions.
 The source release does not claim that the complete player checklist has passed.
 
 Before packaging, make_release_zip.py requires check_clean.py and check_includes.py to pass.
 Original ZED/data, runtime captures, generated game C++/Lua, NRO, packs and translated shaders
 are excluded from both the tracked source and source ZIP.
+
+Build-time language update also validated: all ten choices (`system` plus nine language codes)
+write matching defaults/player templates; partial runs keep the last successful build choice;
+a failed build does not overwrite it; mismatched assembly language and invalid CLI values are
+rejected. The real NRO was rebuilt with `--language es`, its embedded Spanish default was
+checked in the binary, and an assemble-only run without that argument retained Spanish.
+Legacy menu preferences no longer choose a controller style or override the default language;
+controller glyphs are fixed to Nintendo Switch. No new in-game language menu is required.

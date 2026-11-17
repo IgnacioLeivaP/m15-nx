@@ -37,14 +37,14 @@ void ReadLocked() {
 
 void WriteLocked() {
   std::ofstream out(File(), std::ios::trunc);
-  out << "# Opciones del menu Configuracion de Magic 2013 (idioma: al reiniciar el juego)\n";
+  out << "# Magic 2015 legacy options (Switch controller glyphs are fixed)\n";
   for (const auto& [key, value] : g_values) out << key << '=' << value << '\n';
 }
 
 bool Allowed(const std::string& key, const std::string& value) {
   if (key == "idioma") return value == "en" || value == "es" || value == "fr" || value == "de" || value == "it" ||
                               value == "ja" || value == "pt" || value == "ko" || value == "ru";
-  if (key == "estilo") return value == "xbox" || value == "ps" || value == "switch";
+  if (key == "estilo") return value == "switch";
   return false;
 }
 
@@ -90,8 +90,7 @@ std::string CurrentLanguage() {
 }
 
 std::string ButtonStyle() {
-  const std::string style = Get("estilo");
-  return style.empty() ? "xbox" : style;
+  return "switch";
 }
 
 }  // namespace mtg15::opciones

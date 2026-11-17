@@ -37,8 +37,14 @@ py -3 install/install.py --game mtg15 ^
   --lua-dump "C:\my-captures\lua" --shader-dump "C:\my-captures\shaders" ^
   --texture-dump "C:\my-captures\textures" ^
   --thirdparty "C:\port-dependencies" --spirv-cross-source "C:\SPIRV-Cross" ^
-  --out "C:\mtg15-output" --jobs 6
+  --out "C:\mtg15-output" --language es --jobs 6
 ```
+
+`--language es` builds Spanish into the NRO and writes matching startup settings.
+Choices: `system`, `en`, `es`, `fr`, `de`, `it`, `ja`, `pt`, `ko`, `ru`.
+Without the option a fresh build follows the Switch system language. Partial build/package
+runs retain the previous selection; change it with the `nro` step, not just `assemble`.
+Button glyphs are always Nintendo Switch, with no style selector.
 
 `--dlc <folder>` and `--icon <image>` are optional. `--help`, `--list-steps`, `--dry-run`
 and `--only verify` describe or check the inputs. Use output/staging folders outside this
@@ -59,8 +65,8 @@ Album applet mode does not provide enough memory.
 - The Garruk Expansion carousel entry is deliberately hidden, matching the development port's current configuration.
 - Extras contains the local Multiverse galleries. A playable duel was reached in PC testing.
 - The optional DLC input is **one** Garruk's Revenge package with 42 extracted files, not 42 DLC packages.
-- Switch glyphs are applied through a generated texture-override file. Language and button-style dropdowns
-  have not been added to the 2015 Options pages. System/config language behavior remains as in the port.
+- Switch glyphs are applied through a generated texture-override file. There is no controller-style selector.
+  Choose the language with `--language` when building; no in-game language menu is required.
 - Some thin horizontal battlefield lines remain. The development notes report exits after about ten minutes
   of play in some PC sessions. A full match and the new package need hardware validation.
 - Videos are skipped. `mtg15_test_win` and enumeration-skip diagnostics default to false.

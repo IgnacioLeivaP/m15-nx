@@ -37,7 +37,7 @@
 
 // The game's language (the user's request, 2026-10-13): see OnPostInitLogging.
 REXCVAR_DEFINE_STRING(mtg15_language, "", "Mtg15",
-                      "The game's language: en, ja, de, fr, es, it or pt; empty = the system's language (English when "
+                      "The game's language: en, es, fr, de, it, ja, pt, ko or ru; empty = the system's language (English when "
                       "the game does not have it)");
 REXCVAR_DECLARE(uint32_t, user_language);  // the SDK's (xam_user.cpp)
 
@@ -92,28 +92,13 @@ class Mtg15App : public rex::ReXApp {
     if (rex::cvar::GetFlagSource("gpu_plugin") == rex::cvar::Source::kDefault) {
       rex::cvar::SetFlagByName("gpu_plugin", "xenos");
     }
-    // mtg15_language: the game's language by name (main.rsb holds the string tables of en, de, es, fr, it, ja and
-    // pt: the seven copies of <String id="293">, "Play Classic"). It sets the SDK's user_language, which XGetLanguage
-    // reports to the game (the XDK's language numbers).
-    // Empty: the system's language (mtg15_language.cpp), unless user_language was set to another than English.
-    // The button icon style chosen in Settings (mtg15_opciones.txt): the title update's data with those icons,
-    // mtg15_buttons_ps.bin / mtg15_buttons_switch.bin in the game folder (tools/iconos12.py + tools/wad12.py). Xbox: the
-    // original Update001.wad. Takes effect at the next start, like the language.
-    if (rex::cvar::GetFlagSource("update_wad_variant") == rex::cvar::Source::kDefault) {
-      const std::string style = mtg15::opciones::ButtonStyle();
-      if (style == "ps" || style == "switch") rex::cvar::SetFlagByName("update_wad_variant", style);
-    }
+    // The installer sets the build default. Switch glyphs are generated for this port only.
+    // An empty language follows the console system language, without legacy menu preferences.
     std::string language = REXCVAR_GET(mtg15_language);
-    // The language chosen in the game's Settings menu (mtg15_opciones.cpp), unless the config or the command line
-    // names one.
-    if (language.empty()) {
-      language = mtg15::opciones::Get("idioma");
-      if (!language.empty()) REXLOG_INFO("[language] \"{}\" from the Settings menu (mtg15_opciones.txt)", language);
-    }
     if (language.empty() && REXCVAR_GET(user_language) == 1) {
       std::string system_name;
       language = mtg15::language::FromSystem(&system_name);
-      REXLOG_INFO("[language] mtg15_language empty: the system language ({}) gives \"{}\"", system_name, language);
+      REXLOG_INFO("[language] system ({}) selects {}", system_name, language);
     }
     if (!language.empty()) {
       static const std::pair<const char*, const char*> kLanguages[] = {

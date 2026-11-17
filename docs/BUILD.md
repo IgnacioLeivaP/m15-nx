@@ -1,29 +1,25 @@
 # Building the 2015 source release
 
+For first-time installation, follow the [numbered README steps](../README.md#start-here).
+Prepare original files and dependencies first, build next, then copy only the generated
+installation to the SD card. Commands with `^` use Windows **cmd.exe**, not PowerShell.
+Other years and the separate Android ports are linked in the [series index](../README.md#other-magic--duels-ports-for-nintendo-switch).
+
+Start with [CAPTURES.md](CAPTURES.md): it includes the PC bootstrap, capture/rebuild loop
+and collector. Only continue to the full Switch installer after all required hashes match.
+
 The game stores data in encrypted ZED archives. The port's executable can read them, but
 this repository has no offline ZED decryptor. Runtime captures are therefore explicit user
 inputs; the installer must not be described as a complete automatic bootstrap from ZED.
 
 ## Capture inputs
 
-A working PC build can produce the original inputs with:
-
-- `mtg15_lua_dump=true`: original Lua chunks in `lua_dump/`.
-- `renut_shader_capture_dir` and the renderer's shader-capture/dump controls: Xenos containers.
-- `mtg15_renut_tex_dump=true`: converted texture levels in `texdump/`.
-
-Run PC tests with `audio_mute=true`. This repository does not automatically launch the
-PC game or drive it through gameplay to collect complete captures. The hashes and names
-of the inputs expected for this build are in `install/games/mtg15.json`.
-
-The three Lua modules are `dialogue_boxes.content_enumeration`,
-`frontend.press_start.press_start` and `frontend.main_menu.main_menu`. Name each input
-`<module>.luac`; trailing padding is removed by parsing the original Lua 5.1 chunk before
-hash verification. The generated wrappers retain the original chunk's return value.
-
-The two texture inputs retain their port-generated hash/dimension filenames. The icon
-builder uses geometric labels and Pillow's built-in font. It does not import another
-port's raw icon sheets. Its output is `mtg15_texturas.bin` with two MT15 records.
+The [complete capture guide](CAPTURES.md) lists the required original build, commands and
+output paths. The executable image supplies a shader seed; runtime runs supply missing
+containers, three original Lua chunks and two converted textures. `tools/collect_captures.py`
+normalizes numbered Lua dumps, verifies sizes/SHA256 and reports missing files. It does not
+decrypt ZED archives or automatically traverse the game. Success is 3 Lua, 211 shaders and
+2 textures matching `install/games/mtg15.json`. The from-scratch traversal is not fully validated.
 
 ## Pipeline
 
@@ -62,3 +58,4 @@ menu preferences do not override the system/build language choice.
 
 The texture override always uses Nintendo Switch glyphs. Xbox/PlayStation selection is
 not part of this Switch-specific port.
+

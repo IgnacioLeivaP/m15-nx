@@ -3,7 +3,7 @@
 For first-time installation, follow the [numbered README steps](../README.md#start-here).
 Prepare original files and dependencies first, build next, then copy only the generated
 installation to the SD card. Commands with `^` use Windows **cmd.exe**, not PowerShell.
-Other years and the separate Android ports are linked in the [series index](../README.md#other-magic--duels-ports-for-nintendo-switch).
+Other Xbox 360 years are linked in the [series index](../README.md#other-magic--duels-ports-for-nintendo-switch).
 
 Start with [CAPTURES.md](CAPTURES.md): it includes the PC bootstrap, capture/rebuild loop
 and collector. Only continue to the full Switch installer after all required hashes match.

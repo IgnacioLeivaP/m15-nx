@@ -1,7 +1,7 @@
 # Magic 2015: obtaining the required captures
 
 These steps are for the Xbox 360 game `5841141F`, base `0.0.0.2` with TU `0.0.6.2`.
-They do not apply to the Android port. Use your own game and Title Update. Do not download
+Use your own game and Title Update. Do not download
 or redistribute another person's dumps. The game itself decrypts its ZED contents at runtime;
 the installer and capture collector do not decrypt ZED archives offline.
 
